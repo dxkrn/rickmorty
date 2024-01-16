@@ -268,7 +268,9 @@ class Drawer extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(Routes.ABOUT);
+                },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 8.w),
                   child: Row(

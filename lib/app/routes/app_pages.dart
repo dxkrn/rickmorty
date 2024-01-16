@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../modules/about/bindings/about_binding.dart';
+import '../modules/about/views/about_view.dart';
 import '../modules/detail/bindings/detail_binding.dart';
 import '../modules/detail/views/detail_view.dart';
 import '../modules/discover/bindings/discover_binding.dart';
@@ -67,6 +69,16 @@ class AppPages {
       name: _Paths.FAVORITE,
       page: () => const FavoriteView(),
       binding: FavoriteBinding(),
+      transition: Transition.fade,
+      curve: Curves.ease,
+      transitionDuration: const Duration(
+        milliseconds: 200,
+      ),
+    ),
+    GetPage(
+      name: _Paths.ABOUT,
+      page: () => const AboutView(),
+      binding: AboutBinding(),
       transition: Transition.fade,
       curve: Curves.ease,
       transitionDuration: const Duration(
