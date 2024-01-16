@@ -119,7 +119,9 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Get.toNamed(Routes.FAVORITE);
+                      },
                       child: SizedBox(
                         width: 32.w,
                         height: 32.w,
