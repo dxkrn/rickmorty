@@ -92,11 +92,11 @@ class DiscoverView extends GetView<DiscoverController> {
                         mainAxisSpacing: 16.w,
                         childAspectRatio: 3 / 4,
                         children: const [
-                          CharacterCard(withMargin: false),
-                          CharacterCard(withMargin: false),
-                          CharacterCard(withMargin: false),
-                          CharacterCard(withMargin: false),
-                          CharacterCard(withMargin: false),
+                          // CharacterCard(withMargin: false),
+                          // CharacterCard(withMargin: false),
+                          // CharacterCard(withMargin: false),
+                          // CharacterCard(withMargin: false),
+                          // CharacterCard(withMargin: false),
                         ],
                       ),
                     )

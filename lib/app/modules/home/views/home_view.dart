@@ -8,9 +8,9 @@ import 'package:get/get.dart';
 import 'package:rickmorty/app/routes/app_pages.dart';
 import 'package:rickmorty/theme.dart';
 import 'package:rickmorty/widgets/appbar.dart';
-import 'package:rickmorty/widgets/character_card.dart';
 import 'package:rickmorty/widgets/scaffold_body.dart';
 import 'package:rickmorty/widgets/space.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -19,6 +19,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final advancedDrawerController = AdvancedDrawerController();
+    final HomeController homeC = Get.put(HomeController());
 
     return AdvancedDrawer(
       drawer: const Drawer(),
@@ -49,6 +50,7 @@ class HomeView extends GetView<HomeController> {
                     horizontal: 24.w,
                   ),
                   child: ListView(
+                    controller: homeC.scrolController,
                     children: [
                       SpaceVertical(height: 80.w),
                       SizedBox(
@@ -57,73 +59,76 @@ class HomeView extends GetView<HomeController> {
                             'lib/assets/images/logo-rick-morty.png'),
                       ),
                       SpaceVertical(height: 24.w),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: (deviceWidth - 48.w) / 2 - 8.w,
-                            child: const Column(
-                              children: [
-                                CharacterCard(),
-                                CharacterCard(),
-                                CharacterCard(),
-                                CharacterCard(),
-                                CharacterCard(),
-                                CharacterCard(),
-                              ],
+                      Obx(
+                        () => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: (deviceWidth - 48.w) / 2 - 8.w,
+                              child: Column(
+                                children:
+                                    homeC.characterCardListLeft.value.isNotEmpty
+                                        ? homeC.characterCardListLeft.value
+                                        : [
+                                            const CharacterCardShimmer(),
+                                            const CharacterCardShimmer(),
+                                            const CharacterCardShimmer(),
+                                          ],
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: (deviceWidth - 48.w) / 2 - 8.w,
-                            child: Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.toNamed(Routes.DISCOVER);
-                                  },
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: 64.w,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10.w),
-                                    margin: EdgeInsets.only(bottom: 16.w),
-                                    decoration: BoxDecoration(
-                                      color: secondaryColor,
-                                      borderRadius: BorderRadius.circular(64.r),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Search',
-                                          style: regulerTextStyle,
-                                        ),
-                                        SizedBox(
-                                          width: 44.w,
-                                          height: 44.w,
-                                          child: Image.asset(
-                                              'lib/assets/icons/icon-search-circle.png'),
-                                        ),
-                                      ],
+                            SizedBox(
+                              width: (deviceWidth - 48.w) / 2 - 8.w,
+                              child: Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.toNamed(Routes.DISCOVER);
+                                    },
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: 64.w,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10.w),
+                                      margin: EdgeInsets.only(bottom: 16.w),
+                                      decoration: BoxDecoration(
+                                        color: secondaryColor,
+                                        borderRadius:
+                                            BorderRadius.circular(64.r),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Search',
+                                            style: regulerTextStyle,
+                                          ),
+                                          SizedBox(
+                                            width: 44.w,
+                                            height: 44.w,
+                                            child: Image.asset(
+                                                'lib/assets/icons/icon-search-circle.png'),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const Column(
-                                  children: [
-                                    CharacterCard(),
-                                    CharacterCard(),
-                                    CharacterCard(),
-                                    CharacterCard(),
-                                    CharacterCard(),
-                                    CharacterCard(),
-                                  ],
-                                ),
-                              ],
+                                  Column(
+                                    children: homeC.characterCardListRight.value
+                                            .isNotEmpty
+                                        ? homeC.characterCardListRight.value
+                                        : [
+                                            const CharacterCardShimmer(),
+                                            const CharacterCardShimmer(),
+                                            const CharacterCardShimmer(),
+                                          ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -144,7 +149,7 @@ class HomeView extends GetView<HomeController> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Get.toNamed(Routes.FAVORITE);
+                          Get.offAndToNamed(Routes.FAVORITE);
                         },
                         child: SizedBox(
                           width: 32.w,
@@ -159,6 +164,29 @@ class HomeView extends GetView<HomeController> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class CharacterCardShimmer extends StatelessWidget {
+  const CharacterCardShimmer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: secondaryColor,
+      highlightColor: secondaryLightColor,
+      child: Container(
+        width: ((deviceWidth - 48.w) / 2 - 8.w),
+        height: 4 / 3 * ((deviceWidth - 48.w) / 2 - 8.w),
+        margin: EdgeInsets.only(bottom: 16.w),
+        decoration: BoxDecoration(
+          color: secondaryColor,
+          borderRadius: BorderRadius.circular(32.r),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:rickmorty/app/routes/app_pages.dart';
 import 'package:rickmorty/theme.dart';
 import 'package:rickmorty/widgets/appbar.dart';
 import 'package:rickmorty/widgets/character_card.dart';
@@ -31,20 +32,20 @@ class FavoriteView extends GetView<FavoriteController> {
                 mainAxisSpacing: 16.w,
                 childAspectRatio: 3 / 4,
                 children: const [
-                  CharacterCard(withMargin: false),
-                  CharacterCard(withMargin: false),
-                  CharacterCard(withMargin: false),
-                  CharacterCard(withMargin: false),
-                  CharacterCard(withMargin: false),
-                  CharacterCard(withMargin: false),
-                  CharacterCard(withMargin: false),
-                  CharacterCard(withMargin: false),
-                  CharacterCard(withMargin: false),
-                  CharacterCard(withMargin: false),
-                  CharacterCard(withMargin: false),
-                  CharacterCard(withMargin: false),
-                  CharacterCard(withMargin: false),
-                  CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
+                  // CharacterCard(withMargin: false),
                 ],
               ),
             ),
@@ -54,7 +55,7 @@ class FavoriteView extends GetView<FavoriteController> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Get.back();
+                      Get.offAndToNamed(Routes.HOME);
                     },
                     child: SizedBox(
                       width: 32.w,

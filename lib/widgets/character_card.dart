@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:rickmorty/app/models/character_model.dart';
 import 'package:rickmorty/app/routes/app_pages.dart';
 import 'package:rickmorty/theme.dart';
 import 'package:rickmorty/widgets/space.dart';
@@ -9,9 +10,11 @@ class CharacterCard extends StatelessWidget {
   const CharacterCard({
     super.key,
     this.withMargin = true,
+    required this.character,
   });
 
   final bool withMargin;
+  final Character character;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class CharacterCard extends StatelessWidget {
       child: Container(
         width: ((deviceWidth - 48.w) / 2 - 8.w),
         height: 4 / 3 * ((deviceWidth - 48.w) / 2 - 8.w),
-        margin: EdgeInsets.only(bottom: withMargin ? 16.r : 0),
+        margin: EdgeInsets.only(bottom: withMargin ? 16.w : 0),
         decoration: BoxDecoration(
           color: secondaryColor,
           borderRadius: BorderRadius.circular(32.r),
@@ -47,24 +50,27 @@ class CharacterCard extends StatelessWidget {
                           Rect.fromLTRB(0, 0, rect.width, rect.height));
                     },
                     blendMode: BlendMode.dstIn,
-                    child: Image.asset('lib/assets/images/character-1.png'),
+                    child: Image.network(
+                        character.image ?? 'lib/assets/images/character-1.png'),
                   ),
                 ),
                 Column(
                   children: [
-                    SizedBox(
+                    Container(
                       width: double.infinity,
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
                       child: Text(
-                        'Rick Sanchez',
+                        character.name ?? '',
                         style: boldTextStyle,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    SizedBox(
+                    Container(
                       width: double.infinity,
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
                       child: Text(
-                        'Human • Male',
+                        '${character.species} • ${character.gender}',
                         style: regulerTextStyle.copyWith(
                           fontSize: 12.sp,
                         ),
