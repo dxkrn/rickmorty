@@ -16,6 +16,14 @@ void main() async {
   runApp(
     ScreenUtilInit(
       builder: (context, child) => GetMaterialApp(
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarIconBrightness: Brightness.light,
+              statusBarColor: Colors.transparent,
+            ),
+          ),
+        ),
         title: "Application",
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,

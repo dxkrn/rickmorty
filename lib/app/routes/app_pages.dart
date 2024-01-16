@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../modules/detail/bindings/detail_binding.dart';
+import '../modules/detail/views/detail_view.dart';
 import '../modules/discover/bindings/discover_binding.dart';
 import '../modules/discover/views/discover_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -43,6 +45,16 @@ class AppPages {
       name: _Paths.DISCOVER,
       page: () => const DiscoverView(),
       binding: DiscoverBinding(),
+      transition: Transition.fade,
+      curve: Curves.ease,
+      transitionDuration: const Duration(
+        milliseconds: 200,
+      ),
+    ),
+    GetPage(
+      name: _Paths.DETAIL,
+      page: () => const DetailView(),
+      binding: DetailBinding(),
       transition: Transition.fade,
       curve: Curves.ease,
       transitionDuration: const Duration(

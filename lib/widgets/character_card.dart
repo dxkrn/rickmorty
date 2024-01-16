@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:rickmorty/app/routes/app_pages.dart';
 import 'package:rickmorty/theme.dart';
 import 'package:rickmorty/widgets/space.dart';
 
@@ -14,7 +16,9 @@ class CharacterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Get.toNamed(Routes.DETAIL);
+      },
       child: Container(
         width: ((deviceWidth - 48.w) / 2 - 8.w),
         height: 4 / 3 * ((deviceWidth - 48.w) / 2 - 8.w),
