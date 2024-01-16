@@ -1,8 +1,9 @@
 // ignore_for_file: unnecessary_overrides
 
 import 'package:get/get.dart';
+import 'package:rickmorty/app/routes/app_pages.dart';
 
-class HomeController extends GetxController {
+class SplashController extends GetxController {
   @override
   void onInit() {
     super.onInit();
@@ -11,6 +12,9 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+    Future.delayed(const Duration(milliseconds: 2700), () {
+      Get.offAllNamed(Routes.HOME);
+    });
   }
 
   @override

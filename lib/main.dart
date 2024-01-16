@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:rickmorty/app/modules/splash/bindings/splash_binding.dart';
 
 import 'app/routes/app_pages.dart';
 
@@ -19,6 +20,7 @@ void main() async {
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
         debugShowCheckedModeBanner: false,
+        initialBinding: SplashBinding(),
       ),
     ),
   );
