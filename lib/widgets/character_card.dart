@@ -6,16 +6,19 @@ import 'package:rickmorty/widgets/space.dart';
 class CharacterCard extends StatelessWidget {
   const CharacterCard({
     super.key,
+    this.withMargin = true,
   });
+
+  final bool withMargin;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {},
       child: Container(
-        width: double.infinity,
+        width: ((deviceWidth - 48.w) / 2 - 8.w),
         height: 4 / 3 * ((deviceWidth - 48.w) / 2 - 8.w),
-        margin: EdgeInsets.only(bottom: 16.r),
+        margin: EdgeInsets.only(bottom: withMargin ? 16.r : 0),
         decoration: BoxDecoration(
           color: secondaryColor,
           borderRadius: BorderRadius.circular(32.r),

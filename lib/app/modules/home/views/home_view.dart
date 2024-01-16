@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:rickmorty/app/routes/app_pages.dart';
 import 'package:rickmorty/theme.dart';
 import 'package:rickmorty/widgets/appbar.dart';
 import 'package:rickmorty/widgets/character_card.dart';
@@ -56,7 +57,9 @@ class HomeView extends GetView<HomeController> {
                           child: Column(
                             children: [
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Get.toNamed(Routes.DISCOVER);
+                                },
                                 child: Container(
                                   width: double.infinity,
                                   height: 64.w,
@@ -112,7 +115,7 @@ class HomeView extends GetView<HomeController> {
                       child: SizedBox(
                         width: 32.w,
                         height: 32.w,
-                        child: Image.asset('lib/assets/icons/icon_menu.png'),
+                        child: Image.asset('lib/assets/icons/icon-menu.png'),
                       ),
                     ),
                     GestureDetector(
@@ -121,7 +124,7 @@ class HomeView extends GetView<HomeController> {
                         width: 32.w,
                         height: 32.w,
                         child:
-                            Image.asset('lib/assets/icons/icon_favorite.png'),
+                            Image.asset('lib/assets/icons/icon-favorite.png'),
                       ),
                     ),
                   ],
