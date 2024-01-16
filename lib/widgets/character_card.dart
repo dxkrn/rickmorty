@@ -80,7 +80,7 @@ class CharacterCard extends StatelessWidget {
             Positioned(
               top: 10.w,
               right: 10.w,
-              child: PrimaryFavoriteButton(),
+              child: const PrimaryFavoriteButton(),
             ),
           ],
         ),

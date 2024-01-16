@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:rickmorty/app/routes/app_pages.dart';
 import 'package:rickmorty/theme.dart';
 import 'package:rickmorty/widgets/appbar.dart';
 import 'package:rickmorty/widgets/scaffold_body.dart';
@@ -25,30 +24,39 @@ class DetailView extends GetView<DetailController> {
                 children: [
                   SizedBox(
                     width: deviceWidth,
-                    height: deviceWidth,
-                    child: ShaderMask(
-                      shaderCallback: (rect) {
-                        return const LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [Colors.black, Colors.transparent],
-                        ).createShader(
-                            Rect.fromLTRB(0, 0, rect.width, rect.height));
-                      },
-                      blendMode: BlendMode.dstIn,
-                      child: Image.asset('lib/assets/images/character-1.png'),
+                    height: deviceWidth + 32.w,
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          width: deviceWidth,
+                          height: deviceWidth,
+                          child: ShaderMask(
+                            shaderCallback: (rect) {
+                              return const LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [Colors.black, Colors.transparent],
+                              ).createShader(
+                                  Rect.fromLTRB(0, 0, rect.width, rect.height));
+                            },
+                            blendMode: BlendMode.dstIn,
+                            child: Image.asset(
+                                'lib/assets/images/character-1.png'),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 24.w,
+                          child: const FavoriteLongButton(),
+                        ),
+                      ],
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24.w),
                     child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            const FavoriteLongButton(),
-                          ],
-                        ),
+                        SpaceVertical(height: 8.w),
                         SizedBox(
                           width: deviceWidth - 48.w,
                           child: Text(

@@ -6,7 +6,6 @@ import 'package:rickmorty/theme.dart';
 import 'package:rickmorty/widgets/appbar.dart';
 import 'package:rickmorty/widgets/character_card.dart';
 import 'package:rickmorty/widgets/scaffold_body.dart';
-import 'package:rickmorty/widgets/space.dart';
 
 import '../controllers/favorite_controller.dart';
 
