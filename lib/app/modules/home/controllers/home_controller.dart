@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
+import 'package:rickmorty/app/data/get_storage/get_storage.dart';
 import 'package:rickmorty/app/models/character_model.dart';
 import 'package:rickmorty/widgets/character_card.dart';
 import 'package:rickmorty/widgets/snackbar.dart';
@@ -12,6 +13,7 @@ class HomeController extends GetxController {
   late Character character;
   RxList<Widget> characterCardListLeft = (List<Widget>.of([])).obs;
   RxList<Widget> characterCardListRight = (List<Widget>.of([])).obs;
+  RxList<Widget> characterCardList = (List<Widget>.of([])).obs;
 
   final scrolController = ScrollController();
 
@@ -40,15 +42,23 @@ class HomeController extends GetxController {
       List<dynamic> characters = response.data['results'];
 
       for (var i = 0; i < characters.length; i++) {
-        if (i % 2 == 0) {
-          characterCardListLeft.add(
-            CharacterCard(
-              character: Character.fromJson(characters[i]),
-            ),
-          );
+        if (getStorage.read('layoutStyle') == 'grid') {
+          if (i % 2 == 0) {
+            characterCardListLeft.add(
+              CharacterCardSmall(
+                character: Character.fromJson(characters[i]),
+              ),
+            );
+          } else {
+            characterCardListRight.add(
+              CharacterCardSmall(
+                character: Character.fromJson(characters[i]),
+              ),
+            );
+          }
         } else {
-          characterCardListRight.add(
-            CharacterCard(
+          characterCardList.add(
+            CharacterCardLarge(
               character: Character.fromJson(characters[i]),
             ),
           );

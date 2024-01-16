@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:rickmorty/app/data/get_storage/get_storage.dart';
 import 'package:rickmorty/app/routes/app_pages.dart';
 import 'package:rickmorty/theme.dart';
 import 'package:rickmorty/widgets/appbar.dart';
@@ -60,26 +63,81 @@ class HomeView extends GetView<HomeController> {
                       ),
                       SpaceVertical(height: 24.w),
                       Obx(
-                        () => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: (deviceWidth - 48.w) / 2 - 8.w,
-                              child: Column(
-                                children:
-                                    homeC.characterCardListLeft.value.isNotEmpty
-                                        ? homeC.characterCardListLeft.value
-                                        : [
-                                            const CharacterCardShimmer(),
-                                            const CharacterCardShimmer(),
-                                            const CharacterCardShimmer(),
-                                          ],
-                              ),
-                            ),
-                            SizedBox(
-                              width: (deviceWidth - 48.w) / 2 - 8.w,
-                              child: Column(
+                        () => getStorage.read('layoutStyle') == 'grid'
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: (deviceWidth - 48.w) / 2 - 8.w,
+                                    child: Column(
+                                      children: homeC.characterCardListLeft
+                                              .value.isNotEmpty
+                                          ? homeC.characterCardListLeft.value
+                                          : [
+                                              const CharacterCardShimmerSmall(),
+                                              const CharacterCardShimmerSmall(),
+                                              const CharacterCardShimmerSmall(),
+                                            ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: (deviceWidth - 48.w) / 2 - 8.w,
+                                    child: Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Get.toNamed(Routes.DISCOVER);
+                                          },
+                                          child: Container(
+                                            width: double.infinity,
+                                            height: 64.w,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10.w),
+                                            margin:
+                                                EdgeInsets.only(bottom: 16.w),
+                                            decoration: BoxDecoration(
+                                              color: secondaryColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(64.r),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'Search',
+                                                  style: regulerTextStyle,
+                                                ),
+                                                SizedBox(
+                                                  width: 44.w,
+                                                  height: 44.w,
+                                                  child: Image.asset(
+                                                      'lib/assets/icons/icon-search-circle.png'),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Column(
+                                          children: homeC.characterCardListRight
+                                                  .value.isNotEmpty
+                                              ? homeC
+                                                  .characterCardListRight.value
+                                              : [
+                                                  const CharacterCardShimmerSmall(),
+                                                  const CharacterCardShimmerSmall(),
+                                                  const CharacterCardShimmerSmall(),
+                                                ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Column(
                                 children: [
                                   GestureDetector(
                                     onTap: () {
@@ -114,21 +172,18 @@ class HomeView extends GetView<HomeController> {
                                       ),
                                     ),
                                   ),
+                                  SpaceVertical(height: 24.w),
                                   Column(
-                                    children: homeC.characterCardListRight.value
-                                            .isNotEmpty
-                                        ? homeC.characterCardListRight.value
-                                        : [
-                                            const CharacterCardShimmer(),
-                                            const CharacterCardShimmer(),
-                                            const CharacterCardShimmer(),
-                                          ],
+                                    children:
+                                        homeC.characterCardList.value.isNotEmpty
+                                            ? homeC.characterCardList.value
+                                            : [
+                                                const CharacterCardShimmerLarge(),
+                                                const CharacterCardShimmerLarge(),
+                                              ],
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
                       ),
                     ],
                   ),
@@ -170,8 +225,8 @@ class HomeView extends GetView<HomeController> {
   }
 }
 
-class CharacterCardShimmer extends StatelessWidget {
-  const CharacterCardShimmer({
+class CharacterCardShimmerSmall extends StatelessWidget {
+  const CharacterCardShimmerSmall({
     super.key,
   });
 
@@ -188,6 +243,52 @@ class CharacterCardShimmer extends StatelessWidget {
           color: secondaryColor,
           borderRadius: BorderRadius.circular(32.r),
         ),
+      ),
+    );
+  }
+}
+
+class CharacterCardShimmerLarge extends StatelessWidget {
+  const CharacterCardShimmerLarge({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: secondaryColor,
+      highlightColor: secondaryLightColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: deviceWidth - 48.w,
+            height: deviceWidth - 48.w,
+            decoration: BoxDecoration(
+              color: secondaryColor,
+              borderRadius: BorderRadius.circular(32.r),
+            ),
+          ),
+          SpaceVertical(height: 8.r),
+          Container(
+            width: 220.w,
+            height: 32.w,
+            decoration: BoxDecoration(
+              color: secondaryColor,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+          SpaceVertical(height: 8.w),
+          Container(
+            width: 100.w,
+            height: 24.w,
+            decoration: BoxDecoration(
+              color: secondaryColor,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+          SpaceVertical(height: 40.w),
+        ],
       ),
     );
   }
@@ -276,7 +377,115 @@ class Drawer extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Get.dialog(
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Material(
+                          color: Colors.transparent,
+                          child: Container(
+                            width: deviceWidth - 48.w,
+                            padding: EdgeInsets.all(24.w),
+                            decoration: BoxDecoration(
+                              color: secondaryColor,
+                              borderRadius: BorderRadius.circular(32.r),
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Layout',
+                                  style: semiboldTextStyle.copyWith(
+                                      fontSize: 20.w),
+                                ),
+                                SpaceVertical(height: 24.w),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        getStorage.write('layoutStyle', 'grid');
+                                        Get.offAllNamed(Routes.HOME);
+                                      },
+                                      child: Container(
+                                        width: (deviceWidth - 96.w) / 2 - 8.w,
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 16.w,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(32.r),
+                                          border: Border.all(
+                                              width: getStorage.read(
+                                                          'layoutStyle') ==
+                                                      'grid'
+                                                  ? 4.w
+                                                  : 0.w,
+                                              color: accentColor),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              width: (deviceWidth - 96.w) / 2 -
+                                                  24.w,
+                                              height: (deviceWidth - 96.w) / 2 -
+                                                  24.w,
+                                              child: Image.asset(
+                                                'lib/assets/icons/icon-grid.png',
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        getStorage.write('layoutStyle', 'list');
+                                        Get.offAllNamed(Routes.HOME);
+                                      },
+                                      child: Container(
+                                        width: (deviceWidth - 96.w) / 2 - 8.w,
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 16.w,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(32.r),
+                                          border: Border.all(
+                                              width: getStorage.read(
+                                                          'layoutStyle') ==
+                                                      'list'
+                                                  ? 4.w
+                                                  : 0.w,
+                                              color: accentColor),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              width: (deviceWidth - 96.w) / 2 -
+                                                  24.w,
+                                              height: (deviceWidth - 96.w) / 2 -
+                                                  24.w,
+                                              child: Image.asset(
+                                                'lib/assets/icons/icon-list.png',
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 8.w),
                   child: Row(

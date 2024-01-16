@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:rickmorty/app/data/get_storage/get_storage.dart';
 import 'package:rickmorty/app/modules/splash/bindings/splash_binding.dart';
 
 import 'app/routes/app_pages.dart';
@@ -12,6 +14,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+  await GetStorage.init();
 
   runApp(
     ScreenUtilInit(
@@ -32,4 +35,8 @@ void main() async {
       ),
     ),
   );
+
+  if (getStorage.read('layoutStyle') == null) {
+    getStorage.write('layoutStyle', 'grid');
+  }
 }
