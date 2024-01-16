@@ -27,53 +27,94 @@ class CharacterCard extends StatelessWidget {
           color: secondaryColor,
           borderRadius: BorderRadius.circular(32.r),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Stack(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(32.r),
-                topRight: Radius.circular(32.r),
-              ),
-              child: ShaderMask(
-                shaderCallback: (rect) {
-                  return const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.black, Colors.transparent],
-                  ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
-                },
-                blendMode: BlendMode.dstIn,
-                child: Image.asset('lib/assets/images/character-1.png'),
-              ),
-            ),
             Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: Text(
-                    'Rick Sanchez',
-                    style: boldTextStyle,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32.r),
+                    topRight: Radius.circular(32.r),
+                  ),
+                  child: ShaderMask(
+                    shaderCallback: (rect) {
+                      return const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.black, Colors.transparent],
+                      ).createShader(
+                          Rect.fromLTRB(0, 0, rect.width, rect.height));
+                    },
+                    blendMode: BlendMode.dstIn,
+                    child: Image.asset('lib/assets/images/character-1.png'),
                   ),
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: Text(
-                    'Human • Male',
-                    style: regulerTextStyle.copyWith(
-                      fontSize: 12.sp,
+                Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        'Rick Sanchez',
+                        style: boldTextStyle,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        'Human • Male',
+                        style: regulerTextStyle.copyWith(
+                          fontSize: 12.sp,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SpaceVertical(height: 8.w),
+                  ],
                 ),
-                SpaceVertical(height: 8.w),
               ],
+            ),
+            Positioned(
+              top: 10.w,
+              right: 10.w,
+              child: PrimaryFavoriteButton(),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class PrimaryFavoriteButton extends StatefulWidget {
+  const PrimaryFavoriteButton({
+    super.key,
+  });
+
+  @override
+  State<PrimaryFavoriteButton> createState() => _PrimaryFavoriteButtonState();
+}
+
+class _PrimaryFavoriteButtonState extends State<PrimaryFavoriteButton> {
+  bool isFav = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isFav = !isFav;
+        });
+      },
+      child: SizedBox(
+        width: 40.w,
+        height: 40.w,
+        child: Image.asset(isFav
+            ? 'lib/assets/icons/icon-favorite-primary-active.png'
+            : 'lib/assets/icons/icon-favorite-primary-inactive.png'),
       ),
     );
   }
