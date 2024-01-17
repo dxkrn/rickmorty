@@ -118,7 +118,8 @@ class CharacterCardLarge extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.DETAIL);
+        Get.toNamed(Routes.DETAIL,
+            arguments: {'character': character.toJson()});
       },
       child: Container(
         width: deviceWidth - 48.w,

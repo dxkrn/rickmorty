@@ -15,7 +15,7 @@ class HomeController extends GetxController {
   RxList<Widget> characterCardListRight = (List<Widget>.of([])).obs;
   RxList<Widget> characterCardList = (List<Widget>.of([])).obs;
 
-  final scrolController = ScrollController();
+  final scrollController = ScrollController();
 
   @override
   void onInit() {
@@ -67,7 +67,7 @@ class HomeController extends GetxController {
           );
         }
       }
-      CustomSnackbar.show('Yeay😍', 'Characters loaded successfully!');
+      // CustomSnackbar.show('Yeay😍', 'Characters loaded successfully!');
 
       nextPage = response.data['info']['next'];
     } catch (e) {
@@ -83,9 +83,9 @@ class HomeController extends GetxController {
   }
 
   void listenEndOfScroll() {
-    scrolController.addListener(() {
-      if (scrolController.position.atEdge) {
-        bool isTop = scrolController.position.pixels <= 0;
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge) {
+        bool isTop = scrollController.position.pixels <= 0;
         if (isTop) {
           refreshPage();
         } else {
