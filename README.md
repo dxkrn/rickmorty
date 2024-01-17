@@ -54,6 +54,7 @@ Rick and Morty app has several features, including:
 
 Rick & Morty app uses several libraries such as:
 
+- [Flutter v3.16.5] - used as mobile development framework
 - [Dio] - used for HTTP Requests
 - [Flutter Advanced Drawer] - used for create beautiful app drawer
 - [Flutter Screenutil] - used for managing screen size and layout for responsive UI
@@ -139,7 +140,7 @@ https://drive.google.com/file/d/1uvkeSTM1436CpFYcGBI9YCZyL71U8XlZ/view?usp=shari
 
  [![Watch the video](lib/assets/images/video-cover.png)]( https://youtu.be/PplwXPTjAMo)
 
-
+[Flutter v3.16.5]: <https://flutter.dev/>
 [Dio]: <https://pub.dev/packages/dio>
 [Flutter Advanced Drawer]: <https://pub.dev/packages/flutter_advanced_drawer>
 [Flutter Screenutil]: <https://pub.dev/packages/flutter_screenutil>
