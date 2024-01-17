@@ -73,11 +73,16 @@ class DiscoverView extends GetView<DiscoverController> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              width: 44.w,
-                              height: 44.w,
-                              child: Image.asset(
-                                  'lib/assets/icons/icon-search-circle.png'),
+                            GestureDetector(
+                              onTap: () {
+                                discoverC.searchCharacter();
+                              },
+                              child: SizedBox(
+                                width: 44.w,
+                                height: 44.w,
+                                child: Image.asset(
+                                    'lib/assets/icons/icon-search-circle.png'),
+                              ),
                             ),
                           ],
                         ),
