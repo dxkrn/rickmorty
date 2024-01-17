@@ -9,7 +9,7 @@ import 'package:rickmorty/widgets/character_card.dart';
 import 'package:rickmorty/widgets/snackbar.dart';
 
 class HomeController extends GetxController {
-  String nextPage = 'https://rickandmortyapi.com/api/character/?page=1';
+  String nextPage = '';
   late Character character;
   RxList<Widget> characterCardListLeft = (List<Widget>.of([])).obs;
   RxList<Widget> characterCardListRight = (List<Widget>.of([])).obs;
@@ -37,6 +37,7 @@ class HomeController extends GetxController {
   final dio = Dio();
 
   void getCharacter() async {
+    nextPage = 'https://rickandmortyapi.com/api/character/?page=1';
     try {
       final response = await dio.get(nextPage);
       List<dynamic> characters = response.data['results'];
@@ -69,7 +70,11 @@ class HomeController extends GetxController {
       }
       // CustomSnackbar.show('Yeay😍', 'Characters loaded successfully!');
 
-      nextPage = response.data['info']['next'];
+      if (response.data['info']['next'] != null) {
+        nextPage = response.data['info']['next'];
+      } else {
+        nextPage = '';
+      }
     } catch (e) {
       CustomSnackbar.show('Oh No😣', e.toString());
     }
@@ -89,7 +94,9 @@ class HomeController extends GetxController {
         if (isTop) {
           refreshPage();
         } else {
-          getCharacter();
+          if (nextPage != '') {
+            getCharacter();
+          }
         }
       }
     });

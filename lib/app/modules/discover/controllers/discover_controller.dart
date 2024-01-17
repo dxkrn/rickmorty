@@ -92,6 +92,8 @@ class DiscoverController extends GetxController {
 
       if (response.data['info']['next'] != null) {
         nextPage = response.data['info']['next'];
+      } else {
+        nextPage = '';
       }
       isLoading.value = false;
     } catch (e) {
@@ -167,7 +169,9 @@ class DiscoverController extends GetxController {
         if (isTop) {
           // refreshPage();
         } else {
-          loadMore();
+          if (nextPage != '') {
+            loadMore();
+          }
         }
       }
     });
