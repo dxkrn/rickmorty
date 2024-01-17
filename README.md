@@ -134,7 +134,7 @@ https://s.id/rickmorty-dxkrn or click on the
   <img src="lib/assets/icons/icon-get-app.png" alt="Click Here" height="48">
 </a>
 
-## <a name="application-link"></a> Preview 💡
+## <a name="preview"></a> Preview 💡
 
  <img src="lib/assets/images/app-preview.png" alt="App Preview">
 
