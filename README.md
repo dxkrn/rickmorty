@@ -82,7 +82,7 @@ The structure of this project uses the getX pattern which uses an MVC approach.
             - storage
         - models
         - modules
-            - <i>feature name</i>
+            - <i>page name</i>
                 - bindings
                 - controllers
                 - views
@@ -128,9 +128,9 @@ Enjoy the app!😊
 
 ## <a name="application-link"></a> Application Link 🔗
 The Rick & Morty by Dxkrn application can be downloaded at the following link:
-https://drive.google.com/file/d/1uvkeSTM1436CpFYcGBI9YCZyL71U8XlZ/view?usp=sharing or click on the 
+https://s.id/rickmorty-dxkrn or click on the 
 
-<a href="https://drive.google.com/file/d/1uvkeSTM1436CpFYcGBI9YCZyL71U8XlZ/view?usp=sharing ">
+<a href="https://s.id/rickmorty-dxkrn">
   <img src="lib/assets/icons/icon-get-app.png" alt="Click Here" height="48">
 </a>
 
