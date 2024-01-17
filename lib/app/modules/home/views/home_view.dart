@@ -5,7 +5,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:rickmorty/app/data/global/global.dart';
+import 'package:styled_text/styled_text.dart';
 import 'package:get/get.dart';
 import 'package:rickmorty/app/data/storage/get_storage.dart';
 import 'package:rickmorty/app/routes/app_pages.dart';
@@ -267,27 +268,56 @@ class Drawer extends StatelessWidget {
           Column(
             children: [
               GestureDetector(
-                onTap: () {},
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 8.w),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 24.w,
-                        height: 24.w,
-                        child: Image.asset('lib/assets/icons/icon-account.png'),
+                onTap: () {
+                  Get.dialog(
+                    SafeArea(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Material(
+                            color: Colors.transparent,
+                            child: Container(
+                              width: deviceWidth - 48.w,
+                              padding: EdgeInsets.all(24.w),
+                              decoration: BoxDecoration(
+                                color: secondaryColor,
+                                borderRadius: BorderRadius.circular(32.r),
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Language 🌏',
+                                    style: extraboldTextStyle.copyWith(
+                                      fontSize: 20.w,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SpaceVertical(height: 16.w),
+                                  Container(
+                                    width: double.infinity,
+                                    height: 1.w,
+                                    color: accentColor,
+                                  ),
+                                  SpaceVertical(height: 16.w),
+                                  Text(
+                                    'English',
+                                    style: extraboldTextStyle,
+                                  ),
+                                  SpaceVertical(height: 8.w),
+                                  Text(
+                                    'Indonesia (Soon)',
+                                    style: regulerTextStyle,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      SpaceHorizontal(width: 8.w),
-                      Text(
-                        'Account',
-                        style: regulerTextStyle.copyWith(fontSize: 20.sp),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {},
+                    ),
+                  );
+                },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 8.w),
                   child: Row(
@@ -327,7 +357,7 @@ class Drawer extends StatelessWidget {
                               children: [
                                 Text(
                                   'Layout',
-                                  style: semiboldTextStyle.copyWith(
+                                  style: extraboldTextStyle.copyWith(
                                       fontSize: 20.w),
                                 ),
                                 SpaceVertical(height: 24.w),
@@ -460,7 +490,65 @@ class Drawer extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Get.dialog(
+                    SafeArea(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Material(
+                            color: Colors.transparent,
+                            child: Container(
+                              width: deviceWidth - 48.w,
+                              height: deviceWidth,
+                              padding: EdgeInsets.all(24.w),
+                              decoration: BoxDecoration(
+                                color: secondaryColor,
+                                borderRadius: BorderRadius.circular(32.r),
+                              ),
+                              child: ListView(
+                                children: [
+                                  Text(
+                                    'Privacy Policy',
+                                    style: extraboldTextStyle.copyWith(
+                                      fontSize: 24.w,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SpaceVertical(height: 24.w),
+                                  StyledText(
+                                    text: privacyPolicyText,
+                                    style: regulerTextStyle,
+                                    tags: {
+                                      'b': StyledTextTag(
+                                        style: boldTextStyle,
+                                      ),
+                                      'dot': StyledTextIconTag(
+                                        Icons.circle,
+                                        size: 12.w,
+                                      ),
+                                      'i': StyledTextTag(
+                                        style: regulerTextStyle.copyWith(
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                      'blue': StyledTextTag(
+                                        style: boldTextStyle.copyWith(
+                                          color: tertiaryLightColor,
+                                        ),
+                                      ),
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 8.w),
                   child: Row(
@@ -481,7 +569,66 @@ class Drawer extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Get.dialog(
+                    SafeArea(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Material(
+                            color: Colors.transparent,
+                            child: Container(
+                              width: deviceWidth - 48.w,
+                              height: deviceWidth,
+                              padding: EdgeInsets.all(24.w),
+                              decoration: BoxDecoration(
+                                color: secondaryColor,
+                                borderRadius: BorderRadius.circular(32.r),
+                              ),
+                              child: ListView(
+                                children: [
+                                  Text(
+                                    'Terms & Conditions',
+                                    style: extraboldTextStyle.copyWith(
+                                      fontSize: 24.w,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SpaceVertical(height: 24.w),
+                                  StyledText(
+                                    text: termsText,
+                                    style: regulerTextStyle,
+                                    tags: {
+                                      'b': StyledTextTag(
+                                        style: boldTextStyle,
+                                      ),
+                                      'dot': StyledTextIconTag(
+                                        Icons.circle,
+                                        size: 12.w,
+                                        color: accentColor,
+                                      ),
+                                      'i': StyledTextTag(
+                                        style: regulerTextStyle.copyWith(
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                      'blue': StyledTextTag(
+                                        style: boldTextStyle.copyWith(
+                                          color: tertiaryLightColor,
+                                        ),
+                                      ),
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 8.w),
                   child: Row(
