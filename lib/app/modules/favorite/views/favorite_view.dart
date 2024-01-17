@@ -30,34 +30,48 @@ class FavoriteView extends GetView<FavoriteController> {
               width: deviceWidth,
               height: deviceHeight,
               padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: ListView(
-                children: [
-                  SpaceVertical(height: 80.w),
-                  Obx(
-                    () => globalStorage.read('layoutStyle') == 'grid'
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: (deviceWidth - 48.w) / 2 - 8.w,
-                                child: Column(
-                                  children: favC.characterCardListLeft.value,
-                                ),
-                              ),
-                              SizedBox(
-                                width: (deviceWidth - 48.w) / 2 - 8.w,
-                                child: Column(
-                                  children: favC.characterCardListRight.value,
-                                ),
-                              ),
-                            ],
-                          )
-                        : Column(
-                            children: favC.characterCardList.value,
+              child: Obx(
+                () => favC.totalFav.value == 0
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: deviceWidth - 48.w,
+                            child: Image.asset(
+                                'lib/assets/images/no-favorite-yet.png'),
                           ),
-                  ),
-                ],
+                        ],
+                      )
+                    : ListView(
+                        children: [
+                          SpaceVertical(height: 80.w),
+                          globalStorage.read('layoutStyle') == 'grid'
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: (deviceWidth - 48.w) / 2 - 8.w,
+                                      child: Column(
+                                        children:
+                                            favC.characterCardListLeft.value,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: (deviceWidth - 48.w) / 2 - 8.w,
+                                      child: Column(
+                                        children:
+                                            favC.characterCardListRight.value,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  children: favC.characterCardList.value,
+                                ),
+                        ],
+                      ),
               ),
             ),
             Appbar(

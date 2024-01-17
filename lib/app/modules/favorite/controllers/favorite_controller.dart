@@ -12,6 +12,7 @@ class FavoriteController extends GetxController {
   RxList<Widget> characterCardListLeft = <Widget>[].obs;
   RxList<Widget> characterCardListRight = <Widget>[].obs;
   var isLoading = true.obs;
+  var totalFav = 0.obs;
 
   @override
   void onInit() {
@@ -34,15 +35,6 @@ class FavoriteController extends GetxController {
 
     DatabaseManager database = DatabaseManager();
     characters = await database.getCharacters();
-
-    // for (var character in characters) {
-    //   characterCardList.add(CharacterCardSmall(
-    //     character: character,
-    //     withMargin: false,
-    //   ));
-    //   print('ADDED!');
-    //   characterCardList.refresh();
-    // }
     for (var i = 0; i < characters.length; i++) {
       if (globalStorage.read('layoutStyle') == 'grid') {
         if (i % 2 == 0) {
@@ -69,6 +61,10 @@ class FavoriteController extends GetxController {
         );
       }
     }
+
+    totalFav.value = characterCardList.length +
+        characterCardListLeft.length +
+        characterCardListRight.length;
 
     isLoading.value = false;
   }
