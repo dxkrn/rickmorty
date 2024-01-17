@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:rickmorty/theme.dart';
 import 'package:rickmorty/widgets/appbar.dart';
-import 'package:rickmorty/widgets/character_card.dart';
 import 'package:rickmorty/widgets/scaffold_body.dart';
 import 'package:rickmorty/widgets/space.dart';
 

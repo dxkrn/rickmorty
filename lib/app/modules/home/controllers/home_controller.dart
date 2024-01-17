@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
-import 'package:rickmorty/app/data/get_storage/get_storage.dart';
+import 'package:rickmorty/app/data/storage/get_storage.dart';
 import 'package:rickmorty/app/models/character_model.dart';
 import 'package:rickmorty/widgets/character_card.dart';
 import 'package:rickmorty/widgets/snackbar.dart';
@@ -42,16 +42,18 @@ class HomeController extends GetxController {
       List<dynamic> characters = response.data['results'];
 
       for (var i = 0; i < characters.length; i++) {
-        if (getStorage.read('layoutStyle') == 'grid') {
+        if (globalStorage.read('layoutStyle') == 'grid') {
           if (i % 2 == 0) {
             characterCardListLeft.add(
               CharacterCardSmall(
+                originPage: 'home',
                 character: Character.fromJson(characters[i]),
               ),
             );
           } else {
             characterCardListRight.add(
               CharacterCardSmall(
+                originPage: 'home',
                 character: Character.fromJson(characters[i]),
               ),
             );
@@ -59,6 +61,7 @@ class HomeController extends GetxController {
         } else {
           characterCardList.add(
             CharacterCardLarge(
+              originPage: 'home',
               character: Character.fromJson(characters[i]),
             ),
           );

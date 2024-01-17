@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:rickmorty/app/data/database/database_manager.dart';
+import 'package:rickmorty/app/models/character_model.dart';
+import 'package:rickmorty/app/routes/app_pages.dart';
 import 'package:rickmorty/theme.dart';
 import 'package:rickmorty/widgets/appbar.dart';
 import 'package:rickmorty/widgets/scaffold_body.dart';
@@ -13,6 +16,8 @@ class DetailView extends GetView<DetailController> {
   const DetailView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    DetailController detailC = Get.put(DetailController());
+
     return Scaffold(
       body: ScaffoldBody(
         child: SizedBox(
@@ -40,14 +45,19 @@ class DetailView extends GetView<DetailController> {
                                   Rect.fromLTRB(0, 0, rect.width, rect.height));
                             },
                             blendMode: BlendMode.dstIn,
-                            child: Image.asset(
-                                'lib/assets/images/character-1.png'),
+                            child: Image.network(
+                              detailC.character.image ??
+                                  'lib/assets/images/character-1.png',
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         Positioned(
                           bottom: 0,
                           right: 24.w,
-                          child: const FavoriteLongButton(),
+                          child: FavoriteLongButton(
+                            character: detailC.character,
+                          ),
                         ),
                       ],
                     ),
@@ -60,7 +70,7 @@ class DetailView extends GetView<DetailController> {
                         SizedBox(
                           width: deviceWidth - 48.w,
                           child: Text(
-                            'Rick Sanchez',
+                            detailC.character.name ?? '',
                             style: extraboldTextStyle.copyWith(fontSize: 32.sp),
                           ),
                         ),
@@ -105,7 +115,7 @@ class DetailView extends GetView<DetailController> {
                                   ),
                                 ),
                                 child: Text(
-                                  'Human',
+                                  detailC.character.species ?? '',
                                   style: mediumTextStyle.copyWith(
                                     color: fontDarkColor,
                                   ),
@@ -115,7 +125,7 @@ class DetailView extends GetView<DetailController> {
                           ),
                         ),
                         Container(
-                          color: accentLightColor,
+                          color: const Color(0xffECEFC0),
                           child: Row(
                             children: [
                               Container(
@@ -138,7 +148,7 @@ class DetailView extends GetView<DetailController> {
                                   color: Color(0xffDEE39B),
                                 ),
                                 child: Text(
-                                  'Male',
+                                  detailC.character.gender ?? '',
                                   style: mediumTextStyle.copyWith(
                                     color: fontDarkColor,
                                   ),
@@ -171,7 +181,7 @@ class DetailView extends GetView<DetailController> {
                                   color: accentColor,
                                 ),
                                 child: Text(
-                                  'Earth (C-137)',
+                                  detailC.character.origin!.name ?? '',
                                   style: mediumTextStyle.copyWith(
                                     color: fontDarkColor,
                                   ),
@@ -182,8 +192,12 @@ class DetailView extends GetView<DetailController> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                              color: accentLightColor,
-                              borderRadius: BorderRadius.circular(16.r)),
+                            color: const Color(0xffECEFC0),
+                            borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(16.r),
+                              bottomLeft: Radius.circular(16.r),
+                            ),
+                          ),
                           child: Row(
                             children: [
                               Container(
@@ -209,7 +223,7 @@ class DetailView extends GetView<DetailController> {
                                     borderRadius: BorderRadius.only(
                                         bottomRight: Radius.circular(16.r))),
                                 child: Text(
-                                  'Citadel of Ricks',
+                                  detailC.character.location!.name ?? '',
                                   style: mediumTextStyle.copyWith(
                                     color: fontDarkColor,
                                   ),
@@ -230,7 +244,7 @@ class DetailView extends GetView<DetailController> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Get.back();
+                        Get.offAllNamed(Routes.HOME);
                       },
                       child: SizedBox(
                         width: 40.w,
@@ -257,49 +271,80 @@ class DetailView extends GetView<DetailController> {
 class FavoriteLongButton extends StatefulWidget {
   const FavoriteLongButton({
     super.key,
+    required this.character,
   });
+  final Character character;
 
   @override
   State<FavoriteLongButton> createState() => _FavoriteLongButtonState();
 }
 
 class _FavoriteLongButtonState extends State<FavoriteLongButton> {
+  DatabaseManager database = DatabaseManager();
   bool isFav = false;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          isFav = !isFav;
-        });
+    return FutureBuilder(
+      future: database.getCharacters(),
+      builder: (context, snapshot) {
+        List<Character> characters;
+        if (snapshot.hasData) {
+          characters = snapshot.data!;
+
+          for (var char in characters) {
+            if (char.id == widget.character.id) {
+              isFav = true;
+            }
+          }
+
+          return GestureDetector(
+            onTap: () {
+              if (isFav == false) {
+                database.insertCharacter(widget.character);
+                setState(() {
+                  isFav = true;
+                });
+              } else {
+                database.deleteCharacter(widget.character);
+                setState(() {
+                  isFav = false;
+                });
+                Get.offAllNamed(Routes.DETAIL,
+                    arguments: {'character': widget.character.toJson()});
+              }
+            },
+            child: Container(
+              height: 64.w,
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              margin: EdgeInsets.only(bottom: 16.w),
+              decoration: BoxDecoration(
+                color: secondaryColor,
+                borderRadius: BorderRadius.circular(64.r),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    isFav ? 'Remove from Fav' : 'Add to Fav',
+                    style: regulerTextStyle,
+                  ),
+                  SpaceHorizontal(width: 8.w),
+                  SizedBox(
+                    width: 44.w,
+                    height: 44.w,
+                    child: Image.asset(isFav
+                        ? 'lib/assets/icons/icon-favorite-circle-active.png'
+                        : 'lib/assets/icons/icon-favorite-circle-inactive.png'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
       },
-      child: Container(
-        height: 64.w,
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
-        margin: EdgeInsets.only(bottom: 16.w),
-        decoration: BoxDecoration(
-          color: secondaryColor,
-          borderRadius: BorderRadius.circular(64.r),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              isFav ? 'Remove from Fav' : 'Add to Fav',
-              style: regulerTextStyle,
-            ),
-            SpaceHorizontal(width: 8.w),
-            SizedBox(
-              width: 44.w,
-              height: 44.w,
-              child: Image.asset(isFav
-                  ? 'lib/assets/icons/icon-favorite-circle-active.png'
-                  : 'lib/assets/icons/icon-favorite-circle-inactive.png'),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

@@ -1,12 +1,15 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:rickmorty/app/data/storage/get_storage.dart';
 import 'package:rickmorty/app/routes/app_pages.dart';
 import 'package:rickmorty/theme.dart';
 import 'package:rickmorty/widgets/appbar.dart';
-import 'package:rickmorty/widgets/character_card.dart';
 import 'package:rickmorty/widgets/scaffold_body.dart';
+import 'package:rickmorty/widgets/space.dart';
 
 import '../controllers/favorite_controller.dart';
 
@@ -14,6 +17,8 @@ class FavoriteView extends GetView<FavoriteController> {
   const FavoriteView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    FavoriteController favC = Get.put(FavoriteController());
+
     return Scaffold(
         body: ScaffoldBody(
       child: SizedBox(
@@ -21,31 +26,37 @@ class FavoriteView extends GetView<FavoriteController> {
         height: deviceHeight,
         child: Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 24.w,
-              ),
-              child: GridView.count(
-                padding: EdgeInsets.only(top: 120.w, bottom: 40.w),
-                crossAxisCount: 2,
-                crossAxisSpacing: 16.w,
-                mainAxisSpacing: 16.w,
-                childAspectRatio: 3 / 4,
-                children: const [
-                  // CharacterCard(withMargin: false),
-                  // CharacterCard(withMargin: false),
-                  // CharacterCard(withMargin: false),
-                  // CharacterCard(withMargin: false),
-                  // CharacterCard(withMargin: false),
-                  // CharacterCard(withMargin: false),
-                  // CharacterCard(withMargin: false),
-                  // CharacterCard(withMargin: false),
-                  // CharacterCard(withMargin: false),
-                  // CharacterCard(withMargin: false),
-                  // CharacterCard(withMargin: false),
-                  // CharacterCard(withMargin: false),
-                  // CharacterCard(withMargin: false),
-                  // CharacterCard(withMargin: false),
+            Container(
+              width: deviceWidth,
+              height: deviceHeight,
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: ListView(
+                children: [
+                  SpaceVertical(height: 80.w),
+                  Obx(
+                    () => globalStorage.read('layoutStyle') == 'grid'
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: (deviceWidth - 48.w) / 2 - 8.w,
+                                child: Column(
+                                  children: favC.characterCardListLeft.value,
+                                ),
+                              ),
+                              SizedBox(
+                                width: (deviceWidth - 48.w) / 2 - 8.w,
+                                child: Column(
+                                  children: favC.characterCardListRight.value,
+                                ),
+                              ),
+                            ],
+                          )
+                        : Column(
+                            children: favC.characterCardList.value,
+                          ),
+                  ),
                 ],
               ),
             ),

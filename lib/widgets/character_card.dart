@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:rickmorty/app/data/database/database_manager.dart';
 import 'package:rickmorty/app/models/character_model.dart';
 import 'package:rickmorty/app/routes/app_pages.dart';
 import 'package:rickmorty/theme.dart';
@@ -11,16 +12,19 @@ class CharacterCardSmall extends StatelessWidget {
     super.key,
     this.withMargin = true,
     required this.character,
+    required this.originPage,
   });
 
   final bool withMargin;
   final Character character;
+  final String originPage;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.DETAIL);
+        Get.toNamed(Routes.DETAIL,
+            arguments: {'character': character.toJson()});
       },
       child: Container(
         width: ((deviceWidth - 48.w) / 2 - 8.w),
@@ -86,7 +90,10 @@ class CharacterCardSmall extends StatelessWidget {
             Positioned(
               top: 10.w,
               right: 10.w,
-              child: const PrimaryFavoriteButton(),
+              child: PrimaryFavoriteButton(
+                originPage: originPage,
+                character: character,
+              ),
             ),
           ],
         ),
@@ -100,10 +107,12 @@ class CharacterCardLarge extends StatelessWidget {
     super.key,
     this.withMargin = true,
     required this.character,
+    required this.originPage,
   });
 
   final bool withMargin;
   final Character character;
+  final String originPage;
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +166,9 @@ class CharacterCardLarge extends StatelessWidget {
             Positioned(
               top: 10.w,
               right: 10.w,
-              child: const PrimaryFavoriteButton(
+              child: PrimaryFavoriteButton(
+                originPage: originPage,
+                character: character,
                 width: 56,
                 height: 56,
               ),
@@ -170,32 +181,68 @@ class CharacterCardLarge extends StatelessWidget {
 }
 
 class PrimaryFavoriteButton extends StatefulWidget {
-  const PrimaryFavoriteButton({super.key, this.width = 40, this.height = 40});
+  const PrimaryFavoriteButton({
+    super.key,
+    this.width = 40,
+    this.height = 40,
+    required this.character,
+    required this.originPage,
+  });
 
   final double width, height;
+  final Character character;
+  final String originPage;
 
   @override
   State<PrimaryFavoriteButton> createState() => _PrimaryFavoriteButtonState();
 }
 
 class _PrimaryFavoriteButtonState extends State<PrimaryFavoriteButton> {
+  DatabaseManager database = DatabaseManager();
   bool isFav = false;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          isFav = !isFav;
-        });
+    return FutureBuilder(
+      future: database.getCharacters(),
+      builder: (context, snapshot) {
+        List<Character> characters;
+        if (snapshot.hasData) {
+          characters = snapshot.data!;
+
+          for (var char in characters) {
+            if (char.id == widget.character.id) {
+              isFav = true;
+            }
+          }
+
+          return GestureDetector(
+            onTap: () {
+              if (isFav == false) {
+                database.insertCharacter(widget.character);
+                setState(() {
+                  isFav = true;
+                });
+              } else {
+                database.deleteCharacter(widget.character);
+                setState(() {
+                  isFav = false;
+                });
+                Get.offAllNamed('/${widget.originPage}');
+              }
+            },
+            child: SizedBox(
+              width: widget.width.w,
+              height: widget.height.w,
+              child: Image.asset(isFav
+                  ? 'lib/assets/icons/icon-favorite-primary-active.png'
+                  : 'lib/assets/icons/icon-favorite-primary-inactive.png'),
+            ),
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
       },
-      child: SizedBox(
-        width: widget.width.w,
-        height: widget.height.w,
-        child: Image.asset(isFav
-            ? 'lib/assets/icons/icon-favorite-primary-active.png'
-            : 'lib/assets/icons/icon-favorite-primary-inactive.png'),
-      ),
     );
   }
 }

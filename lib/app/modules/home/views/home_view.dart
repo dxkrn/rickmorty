@@ -7,7 +7,7 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:rickmorty/app/data/get_storage/get_storage.dart';
+import 'package:rickmorty/app/data/storage/get_storage.dart';
 import 'package:rickmorty/app/routes/app_pages.dart';
 import 'package:rickmorty/theme.dart';
 import 'package:rickmorty/widgets/appbar.dart';
@@ -63,7 +63,7 @@ class HomeView extends GetView<HomeController> {
                       ),
                       SpaceVertical(height: 24.w),
                       Obx(
-                        () => getStorage.read('layoutStyle') == 'grid'
+                        () => globalStorage.read('layoutStyle') == 'grid'
                             ? Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -406,7 +406,8 @@ class Drawer extends StatelessWidget {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        getStorage.write('layoutStyle', 'grid');
+                                        globalStorage.write(
+                                            'layoutStyle', 'grid');
                                         Get.offAllNamed(Routes.HOME);
                                       },
                                       child: Container(
@@ -418,7 +419,7 @@ class Drawer extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(32.r),
                                           border: Border.all(
-                                              width: getStorage.read(
+                                              width: globalStorage.read(
                                                           'layoutStyle') ==
                                                       'grid'
                                                   ? 4.w
@@ -442,7 +443,8 @@ class Drawer extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        getStorage.write('layoutStyle', 'list');
+                                        globalStorage.write(
+                                            'layoutStyle', 'list');
                                         Get.offAllNamed(Routes.HOME);
                                       },
                                       child: Container(
@@ -454,7 +456,7 @@ class Drawer extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(32.r),
                                           border: Border.all(
-                                              width: getStorage.read(
+                                              width: globalStorage.read(
                                                           'layoutStyle') ==
                                                       'list'
                                                   ? 4.w
