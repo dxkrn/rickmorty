@@ -80,6 +80,49 @@ class HomeController extends GetxController {
     }
   }
 
+  void loadMoreCharacter() async {
+    try {
+      final response = await dio.get(nextPage);
+      List<dynamic> characters = response.data['results'];
+
+      for (var i = 0; i < characters.length; i++) {
+        if (globalStorage.read('layoutStyle') == 'grid') {
+          if (i % 2 == 0) {
+            characterCardListLeft.add(
+              CharacterCardSmall(
+                originPage: 'home',
+                character: Character.fromJson(characters[i]),
+              ),
+            );
+          } else {
+            characterCardListRight.add(
+              CharacterCardSmall(
+                originPage: 'home',
+                character: Character.fromJson(characters[i]),
+              ),
+            );
+          }
+        } else {
+          characterCardList.add(
+            CharacterCardLarge(
+              originPage: 'home',
+              character: Character.fromJson(characters[i]),
+            ),
+          );
+        }
+      }
+      // CustomSnackbar.show('Yeay😍', 'Characters loaded successfully!');
+
+      if (response.data['info']['next'] != null) {
+        nextPage = response.data['info']['next'];
+      } else {
+        nextPage = '';
+      }
+    } catch (e) {
+      CustomSnackbar.show('Oh No😣', e.toString());
+    }
+  }
+
   void refreshPage() {
     nextPage = 'https://rickandmortyapi.com/api/character/?page=1';
     characterCardListLeft.clear();
@@ -95,7 +138,7 @@ class HomeController extends GetxController {
           refreshPage();
         } else {
           if (nextPage != '') {
-            getCharacter();
+            loadMoreCharacter();
           }
         }
       }
